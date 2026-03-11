@@ -5,7 +5,7 @@ node {
     }
 
     stage('Install Dependency') {
-        sh '/usr/local/bin/composer install --no-interaction --prefer-dist --no-scripts'
+        sh '/usr/local/bin/composer install --no-interaction --prefer-dist --no-scripts --ignore-platform-reqs'
     }
 
     stage('Prepare Laravel') {
