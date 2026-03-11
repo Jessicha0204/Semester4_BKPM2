@@ -1,12 +1,16 @@
 node {
 
+    environment {
+        PATH = "/usr/local/bin:${env.PATH}"
+    }
+
     stage('Checkout Code') {
         checkout scm
     }
 
     stage('Install Dependency') {
         dir('src') {
-            sh 'composer install --no-interaction --prefer-dist --no-scripts'
+            sh '/usr/local/bin/composer install --no-interaction --prefer-dist --no-scripts'
         }
     }
 
