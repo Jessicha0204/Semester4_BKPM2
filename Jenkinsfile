@@ -7,14 +7,13 @@ node {
             sh '''
             cp $ENV_FILE .env
             echo "Secret file berhasil dimuat ke root project"
-            php artisan serve --host=0.0.0.0 --port=8092
+            php artisan serve --host=0.0.0.0 --port=8092 &
             '''
         }
     }
 
     stage("Build") {
         sh '''
-        cd src
         echo "Simulasi build berhasil"
         '''
     }
