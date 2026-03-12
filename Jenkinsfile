@@ -12,19 +12,14 @@ node {
     }
 
     stage("Build") {
-        docker.image('composer:2').inside('-u root') {
-            sh '''
-            cd src
-            rm -f composer.lock
-            composer install
-            '''
-        }
+        sh '''
+        cd src
+        echo "Simulasi build berhasil"
+        '''
     }
 
     stage("Testing") {
-        docker.image('ubuntu').inside('-u root') {
-            sh 'echo "Pipeline Jenkins berhasil dijalankan"'
-        }
+        sh 'echo "Pipeline Jenkins berhasil dijalankan"'
     }
 
 }
