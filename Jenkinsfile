@@ -3,7 +3,7 @@ node {
     checkout scm
 
     stage("Load Secret File") {
-        withCredentials([file(credentialsId: 'env-file', variable: 'ENV_FILE')]) {
+        withCredentials([file(credentialsId: 'E41230154', variable: 'ENV_FILE')]) {
             sh '''
             cp $ENV_FILE src/.env
             echo "Secret file berhasil dimuat"
