@@ -13,7 +13,6 @@ node {
 
     stage("Build") {
         sh '''
-        cd src
         composer install --no-interaction --prefer-dist
         php artisan key:generate
         echo "Build berhasil"
@@ -22,7 +21,6 @@ node {
 
     stage("Testing") {
         sh '''
-        cd src
         echo "Testing berhasil"
         '''
     }
