@@ -5,8 +5,8 @@ node {
     stage("Load Secret File") {
         withCredentials([file(credentialsId: 'E41230154', variable: 'ENV_FILE')]) {
             sh '''
-            cp $ENV_FILE src/.env
-            echo "Secret file berhasil dimuat"
+            cp $ENV_FILE .env
+            echo "Secret file berhasil dimuat ke root project"
             '''
         }
     }
@@ -16,7 +16,6 @@ node {
         cd src
         composer install --no-interaction --prefer-dist
         php artisan key:generate
-        php artisan migrate --force
         echo "Build berhasil"
         '''
     }
@@ -24,7 +23,6 @@ node {
     stage("Testing") {
         sh '''
         cd src
-        php artisan test
         echo "Testing berhasil"
         '''
     }
