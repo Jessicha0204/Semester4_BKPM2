@@ -5,21 +5,28 @@ node {
     stage("Load Secret File") {
         withCredentials([file(credentialsId: 'E41230154', variable: 'ENV_FILE')]) {
             sh '''
-            cp $ENV_FILE .env
-            echo "Secret file berhasil dimuat ke root project"
-            php artisan serve --host=0.0.0.0 --port=8092 &
+            cp $ENV_FILE src/.env
+            echo "Secret file berhasil dimuat"
             '''
         }
     }
 
     stage("Build") {
         sh '''
-        echo "Simulasi build berhasil"
+        cd src
+        composer install --no-interaction --prefer-dist
+        php artisan key:generate
+        php artisan migrate --force
+        echo "Build berhasil"
         '''
     }
 
     stage("Testing") {
-        sh 'echo "Pipeline Jenkins berhasil dijalankan"'
+        sh '''
+        cd src
+        php artisan test
+        echo "Testing berhasil"
+        '''
     }
 
 }
