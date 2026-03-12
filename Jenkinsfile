@@ -1,27 +1,30 @@
 node {
 
-    stage('Checkout Code') {
-        checkout scm
+    checkout scm
+
+    stage("Load Secret File") {
+        withCredentials([file(credentialsId: 'env-file', variable: 'ENV_FILE')]) {
+            sh '''
+            cp $ENV_FILE src/.env
+            echo "Secret file berhasil dimuat"
+            '''
+        }
     }
 
-    stage('Install Dependency') {
-        sh '/usr/local/bin/composer install --no-interaction --prefer-dist --no-scripts --ignore-platform-reqs'
+    stage("Build") {
+        docker.image('composer:2').inside('-u root') {
+            sh '''
+            cd src
+            rm -f composer.lock
+            composer install
+            '''
+        }
     }
 
-    stage('Prepare Laravel') {
-        sh 'cp .env.example .env || true'
-        sh 'php artisan key:generate || true'
-    }
-
-    stage('Laravel Check') {
-        sh 'php artisan --version'
-    }
-
-    stage('Deploy to Production') {
-        sh '''
-        cp -r . /var/www/html/ 2>/dev/null || true
-        echo "Deploy selesai ke local container"
-        '''
+    stage("Testing") {
+        docker.image('ubuntu').inside('-u root') {
+            sh 'echo "Pipeline Jenkins berhasil dijalankan"'
+        }
     }
 
 }
